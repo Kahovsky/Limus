@@ -15,7 +15,7 @@ manager = pygame_gui.UIManager((800, 500))
 FPS = 50
 
 pygame.mixer.music.load('data/ppk-voskreshenie (1).mp3')
-pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.set_volume(0.1)
 
 
 def draw_text(surf, text, size, x, y, col, ):
@@ -55,7 +55,7 @@ def record_screen(WIDTH, HEIGHT, screen):
     screen.blit(fon, (0, 0))
     draw_text(screen, "РЕЙТИНГ ИГРОКОВ", HEIGHT // 7, WIDTH // 2, 5, (255, 255, 255))
 
-    levels = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 20),
+    level = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((10, 20),
                                                                     (WIDTH // 7, HEIGHT // 9)),
                                           text='уровни',
                                           manager=manager)
@@ -74,7 +74,7 @@ def record_screen(WIDTH, HEIGHT, screen):
                 terminate()
             if event.type == pygame.USEREVENT:
                 if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == levels:
+                    if event.ui_element == level:
                         pygame.mixer.music.pause()
                         level_screen(WIDTH, HEIGHT, screen)
                         return
@@ -101,6 +101,7 @@ def record_screen(WIDTH, HEIGHT, screen):
 
 
 def level_screen(WIDTH, HEIGHT, screen):
+    import levels
     pygame.mixer.music.play(-1)
     manager = pygame_gui.UIManager((WIDTH, HEIGHT))
     fon = pygame.transform.scale(load_image('background_levels.jpg'), (WIDTH, HEIGHT))
@@ -203,11 +204,6 @@ def final_screen(c, WIDTH, HEIGHT, screen, f):
                                                                     (WIDTH // 7, HEIGHT // 9)),
                                           text='уровни',
                                           manager=manager)
-    restart = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect((WIDTH // 2 - (HEIGHT // 9) // 2 - 10, HEIGHT // 9 * 8),
-                                  (HEIGHT // 9 + 20, HEIGHT // 9)),
-        text='заново',
-        manager=manager)
     reiting = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((WIDTH // 4 * 3 - WIDTH // 7, HEIGHT // 9 * 8),
                                                                      (WIDTH // 7, HEIGHT // 9)),
                                            text='рейтинг',
@@ -226,10 +222,6 @@ def final_screen(c, WIDTH, HEIGHT, screen, f):
                     elif event.ui_element == reiting:
                         pygame.mixer.music.pause()
                         record_screen(WIDTH, HEIGHT, screen)
-                        return
-                    elif event.ui_element == restart:
-                        pygame.mixer.music.pause()
-                        levels.level()
                         return
             manager.process_events(event)
 
